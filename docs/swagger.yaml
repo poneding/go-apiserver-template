@@ -1,0 +1,164 @@
+definitions:
+  http.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      msg:
+        type: string
+    type: object
+  models.Order:
+    properties:
+      id:
+        type: integer
+      price:
+        type: number
+    type: object
+  models.User:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      orders:
+        items:
+          $ref: '#/definitions/models.Order'
+        type: array
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample server celler server.
+  title: Go Web Template API
+  version: v1
+paths:
+  /api/v1/users:
+    get:
+      consumes:
+      - application/json
+      description: get users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.Response'
+      summary: List users
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      description: create user
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.Response'
+      summary: Create user
+      tags:
+      - User
+  /api/v1/users/{uid}:
+    delete:
+      consumes:
+      - application/json
+      description: delete user
+      parameters:
+      - description: User ID
+        in: path
+        name: uid
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.Response'
+      summary: Delete user
+      tags:
+      - User
+    get:
+      consumes:
+      - application/json
+      description: get user by id
+      parameters:
+      - description: User ID
+        in: path
+        name: uid
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.Response'
+      summary: Get user by id
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: update user
+      parameters:
+      - description: User ID
+        in: path
+        name: uid
+        required: true
+        type: integer
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.Response'
+      summary: Update user
+      tags:
+      - User
+  /api/v1/users/{uid}/orders/{oid}:
+    get:
+      consumes:
+      - application/json
+      description: Get user order by id
+      parameters:
+      - description: User ID
+        in: path
+        name: uid
+        required: true
+        type: integer
+      - description: Order ID
+        in: path
+        name: oid
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.Response'
+      summary: Get user order by id
+      tags:
+      - User
+swagger: "2.0"
