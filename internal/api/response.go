@@ -1,10 +1,9 @@
-package http
+package api
 
 import (
 	"errors"
+	"go-apiserver-template/internal/ctx"
 	"net/http"
-
-	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -32,7 +31,7 @@ type Response struct {
 }
 
 // Success returns a success response
-func Success(c *gin.Context, data any) {
+func Success(c *ctx.Context, data any) {
 	c.JSON(http.StatusOK, Response{
 		Code: CodeSuccess,
 		Data: data,
@@ -40,7 +39,7 @@ func Success(c *gin.Context, data any) {
 }
 
 // Error returns an error response
-func Error(c *gin.Context, err error) {
+func Error(c *ctx.Context, err error) {
 	c.JSON(http.StatusOK, Response{
 		Code: CodeError,
 		Msg:  err.Error(),
@@ -49,7 +48,7 @@ func Error(c *gin.Context, err error) {
 }
 
 // ErrorWithStatus returns an error response with specified http status code
-func ErrorWithStatus(c *gin.Context, status int, err error) {
+func ErrorWithStatus(c *ctx.Context, status int, err error) {
 	c.JSON(status, Response{
 		Code: CodeError,
 		Msg:  err.Error(),
@@ -58,21 +57,21 @@ func ErrorWithStatus(c *gin.Context, status int, err error) {
 }
 
 // BadRequest returns a bad request response
-func BadRequest(c *gin.Context) {
+func BadRequest(c *ctx.Context) {
 	ErrorWithStatus(c, http.StatusBadRequest, ErrBadRequest)
 }
 
 // Unauthorized returns an unauthorized response
-func Unauthorized(c *gin.Context) {
+func Unauthorized(c *ctx.Context) {
 	ErrorWithStatus(c, http.StatusUnauthorized, ErrUnauthorized)
 }
 
 // Forbidden returns a forbidden response
-func Forbidden(c *gin.Context) {
+func Forbidden(c *ctx.Context) {
 	ErrorWithStatus(c, http.StatusForbidden, ErrForbidden)
 }
 
 // NotFound returns a not found response
-func NotFound(c *gin.Context) {
+func NotFound(c *ctx.Context) {
 	ErrorWithStatus(c, http.StatusNotFound, ErrNotFound)
 }

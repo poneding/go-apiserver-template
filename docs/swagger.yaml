@@ -1,5 +1,5 @@
 definitions:
-  http.Response:
+  api.Response:
     properties:
       code:
         type: integer
@@ -10,7 +10,7 @@ definitions:
   models.Order:
     properties:
       id:
-        type: integer
+        type: string
       price:
         type: number
     type: object
@@ -24,14 +24,37 @@ definitions:
         items:
           $ref: '#/definitions/models.Order'
         type: array
+    required:
+    - name
     type: object
 host: localhost:8080
 info:
   contact: {}
   description: This is a sample server celler server.
-  title: Go Web Template API
+  title: Go APIServer Template
   version: v1
 paths:
+  /api/v1/orders/{oid}:
+    get:
+      consumes:
+      - application/json
+      description: Get order by id
+      parameters:
+      - description: Order ID
+        in: path
+        name: oid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.Response'
+      summary: Get order by id
+      tags:
+      - Order
   /api/v1/users:
     get:
       consumes:
@@ -43,7 +66,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/http.Response'
+            $ref: '#/definitions/api.Response'
       summary: List users
       tags:
       - User
@@ -64,7 +87,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/http.Response'
+            $ref: '#/definitions/api.Response'
       summary: Create user
       tags:
       - User
@@ -85,7 +108,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/http.Response'
+            $ref: '#/definitions/api.Response'
       summary: Delete user
       tags:
       - User
@@ -105,7 +128,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/http.Response'
+            $ref: '#/definitions/api.Response'
       summary: Get user by id
       tags:
       - User
@@ -131,34 +154,8 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/http.Response'
+            $ref: '#/definitions/api.Response'
       summary: Update user
-      tags:
-      - User
-  /api/v1/users/{uid}/orders/{oid}:
-    get:
-      consumes:
-      - application/json
-      description: Get user order by id
-      parameters:
-      - description: User ID
-        in: path
-        name: uid
-        required: true
-        type: integer
-      - description: Order ID
-        in: path
-        name: oid
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/http.Response'
-      summary: Get user order by id
       tags:
       - User
 swagger: "2.0"

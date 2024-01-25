@@ -2,7 +2,7 @@ package config
 
 import (
 	"go-apiserver-template/internal/global"
-	"log"
+	"go-apiserver-template/pkg/log"
 	"os"
 
 	"github.com/spf13/viper"
@@ -27,7 +27,7 @@ func Instance() *Config {
 	if configInstance == nil {
 		configPath := os.Getenv(global.ConfigFileEnvKey)
 		if configPath == "" {
-			configPath = "config.yaml"
+			configPath = "config/config.yaml"
 		}
 
 		viper.SetConfigFile(configPath)

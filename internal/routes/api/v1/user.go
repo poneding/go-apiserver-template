@@ -1,11 +1,11 @@
 package v1
 
 import (
-	"go-apiserver-template/internal/http"
+	"go-apiserver-template/internal/api"
+	"go-apiserver-template/internal/ctx"
 	"go-apiserver-template/internal/models"
 	"go-apiserver-template/internal/services"
 
-	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 )
 
@@ -14,17 +14,17 @@ import (
 // @Tags User
 // @Accept json
 // @Produce json
-// @Success 200 {object} http.Response{data=[]models.User}
-// @Failure 200 {object} http.Response
+// @Success 200 {object} api.Response{data=[]models.User}
+// @Failure 200 {object} api.Response
 // @Router /api/v1/users [get]
-func ListUsers(c *gin.Context) {
+func ListUsers(c *ctx.Context) {
 	users, err := services.NewUserService().ListUsers()
 	if err != nil {
-		http.Error(c, err)
+		api.Error(c, err)
 		return
 	}
 
-	http.Success(c, users)
+	api.Success(c, users)
 }
 
 // @Summary Get user by id
@@ -33,18 +33,18 @@ func ListUsers(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param uid path int true "User ID"
-// @Success 200 {object} http.Response{data=models.User}
-// @Failure 200 {object} http.Response
+// @Success 200 {object} api.Response{data=models.User}
+// @Failure 200 {object} api.Response
 // @Router /api/v1/users/{uid} [get]
-func GetUser(c *gin.Context) {
+func GetUser(c *ctx.Context) {
 	userID := cast.ToUint64(c.Param("uid"))
 	u, err := services.NewUserService().GetUser(userID)
 	if err != nil {
-		http.Error(c, err)
+		api.Error(c, err)
 		return
 	}
 
-	http.Success(c, u)
+	api.Success(c, u)
 }
 
 // @Summary Create user
@@ -53,23 +53,23 @@ func GetUser(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param user body models.User true "User"
-// @Success 200 {object} http.Response{data=models.User}
-// @Failure 200 {object} http.Response
+// @Success 200 {object} api.Response{data=models.User}
+// @Failure 200 {object} api.Response
 // @Router /api/v1/users [post]
-func CreateUser(c *gin.Context) {
+func CreateUser(c *ctx.Context) {
 	var user models.User
 	if err := c.Bind(&user); err != nil {
-		http.BadRequest(c)
+		api.BadRequest(c)
 		return
 	}
 
 	u, err := services.NewUserService().CreateUser(&user)
 	if err != nil {
-		http.Error(c, err)
+		api.Error(c, err)
 		return
 	}
 
-	http.Success(c, u)
+	api.Success(c, u)
 }
 
 // @Summary Update user
@@ -79,23 +79,23 @@ func CreateUser(c *gin.Context) {
 // @Produce json
 // @Param uid path int true "User ID"
 // @Param user body models.User true "User"
-// @Success 200 {object} http.Response{data=models.User}
-// @Failure 200 {object} http.Response
+// @Success 200 {object} api.Response{data=models.User}
+// @Failure 200 {object} api.Response
 // @Router /api/v1/users/{uid} [put]
-func UpdateUser(c *gin.Context) {
+func UpdateUser(c *ctx.Context) {
 	var user models.User
 	if err := c.Bind(&user); err != nil {
-		http.BadRequest(c)
+		api.BadRequest(c)
 		return
 	}
 
 	u, err := services.NewUserService().UpdateUser(&user)
 	if err != nil {
-		http.Error(c, err)
+		api.Error(c, err)
 		return
 	}
 
-	http.Success(c, u)
+	api.Success(c, u)
 }
 
 // @Summary Delete user
@@ -104,15 +104,15 @@ func UpdateUser(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param uid path int true "User ID"
-// @Success 200 {object} http.Response
-// @Failure 200 {object} http.Response
+// @Success 200 {object} api.Response
+// @Failure 200 {object} api.Response
 // @Router /api/v1/users/{uid} [delete]
-func DeleteUser(c *gin.Context) {
+func DeleteUser(c *ctx.Context) {
 	userID := cast.ToUint64(c.Param("uid"))
 	if err := services.NewUserService().DeleteUser(userID); err != nil {
-		http.Error(c, err)
+		api.Error(c, err)
 		return
 	}
 
-	http.Success(c, nil)
+	api.Success(c, nil)
 }

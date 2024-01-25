@@ -9,6 +9,9 @@ build:
 	docker buildx build --platform linux/amd64,linux/arm64 -t ${IMAGE_NAME}:${IMAGE_TAG} --push . -f ./hack/docker/Dockerfile
 
 .PHONY: run
-run:
+run: swag
+	RUN_MODE=dev go run cmd/main.go
+
+.PHONY: swag
+swag:
 	swag init -g cmd/main.go
-	go run cmd/main.go

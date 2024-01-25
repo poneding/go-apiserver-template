@@ -6,7 +6,7 @@ import (
 )
 
 type OrderServiceInterface interface {
-	GetUserOrder(uid, oid uint64) (*entities.Order, error)
+	GetOrder(oid string) (*entities.Order, error)
 }
 
 func NewOrderService() OrderServiceInterface {
@@ -16,9 +16,9 @@ func NewOrderService() OrderServiceInterface {
 type orderService struct {
 }
 
-func (s *orderService) GetUserOrder(uid, oid uint64) (*entities.Order, error) {
+func (s *orderService) GetOrder(oid string) (*entities.Order, error) {
 	var order entities.Order
-	if err := db.Repository().Where("user_id = ? AND id = ?", uid, oid).First(&order).Error; err != nil {
+	if err := db.Repository().Where("id = ?", oid).First(&order).Error; err != nil {
 		return nil, err
 	}
 

@@ -6,7 +6,7 @@ data:
   config.yaml: |
     db:
       type: mysql
-      dns: root:123456@tcp(localhost:3306)/dev?charset=utf8&parseTime=True&loc=Local
+      dns: root:ding@tcp(localhost:3306)/dev?charset=utf8&parseTime=True&loc=Local
 
 ---
 apiVersion: apps/v1
@@ -30,6 +30,8 @@ spec:
             value: /app/config.yaml
           - name: RUN_MODE
             value: dev
+          - name: EXTERNAL_HOST
+            value: demo-01.ketches.cn
         resources:
           limits:
             memory: "128Mi"

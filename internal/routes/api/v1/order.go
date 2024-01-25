@@ -1,32 +1,28 @@
 package v1
 
 import (
-	"go-apiserver-template/internal/http"
+	"go-apiserver-template/internal/api"
+	"go-apiserver-template/internal/ctx"
 	"go-apiserver-template/internal/services"
-
-	"github.com/gin-gonic/gin"
-	"github.com/spf13/cast"
 )
 
-// @Summary Get user order by id
-// @Description Get user order by id
-// @Tags User
+// @Summary Get order by id
+// @Description Get order by id
+// @Tags Order
 // @Accept json
 // @Produce json
-// @Param uid path int true "User ID"
-// @Param oid path int true "Order ID"
-// @Success 200 {object} http.Response{data=models.Order}
-// @Failure 200 {object} http.Response
-// @Router /api/v1/users/{uid}/orders/{oid} [get]
-func GetUserOrder(c *gin.Context) {
-	uid := cast.ToUint64(c.Param("uid"))
-	oid := cast.ToUint64(c.Param("oid"))
+// @Param oid path string true "Order ID"
+// @Success 200 {object} api.Response{data=models.Order}
+// @Failure 200 {object} api.Response
+// @Router /api/v1/orders/{oid} [get]
+func GetOrder(c *ctx.Context) {
+	oid := c.Param("oid")
 
-	o, err := services.NewOrderService().GetUserOrder(uid, oid)
+	o, err := services.NewOrderService().GetOrder(oid)
 	if err != nil {
-		http.Error(c, err)
+		api.Error(c, err)
 		return
 	}
 
-	http.Success(c, o)
+	api.Success(c, o)
 }

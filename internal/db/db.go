@@ -3,7 +3,7 @@ package db
 import (
 	"go-apiserver-template/internal/config"
 	"go-apiserver-template/internal/global"
-	"log"
+	"go-apiserver-template/pkg/log"
 	"os"
 
 	"gorm.io/gorm"
@@ -48,6 +48,7 @@ func instance() *gorm.DB {
 		log.Fatalf("error connecting to database, %v", err)
 	}
 
+	// Migrate the database
 	Migrate(result)
 
 	return result
