@@ -27,6 +27,7 @@ func Register(root *gin.Engine) {
 	}
 
 	apiv1 := root.Group("/api/v1")
+	// apiv1.Use(middlewares.Latency())
 
 	registerUserRouters(apiv1)
 	registerUserOrderRouters(apiv1)

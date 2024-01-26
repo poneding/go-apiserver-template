@@ -8,24 +8,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Server is the interface for http web server
-// type Server interface {
-// 	Run() error
-// 	RunTLS(certFile, keyFile string)
-// }
-
-// serverOption is the option for http web server
-type serverOption func(*server)
+// ServerOption is the option for http web server
+type ServerOption func(*Server)
 
 // WithPort set the port for http web server
-func WithPort(port string) serverOption {
-	return func(s *server) {
+func WithPort(port string) ServerOption {
+	return func(s *Server) {
 		s.Addr = port
 	}
 }
 
 // New create a new http web server
-func New(opts ...serverOption) *server {
+func New(opts ...ServerOption) *Server {
 	e := gin.New()
 	e.Use(
 		// builtin middlewares
@@ -33,10 +27,20 @@ func New(opts ...serverOption) *server {
 		gin.Recovery(),
 	)
 
+	// disable gin bind validation
+	// gin.DisableBindValidation()
+	// disable gin color log
+	// gin.DisableConsoleColor()
+
+	// custom log writer
+	// f, _ := os.Create("server.log")
+	// gin.DefaultWriter = io.MultiWriter(f)
+	// gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
+
 	// Registry routers before run
 	routes.Register(e)
 
-	return &server{
+	return &Server{
 		Server: &http.Server{
 			Addr:    ":8080",
 			Handler: e,
@@ -44,17 +48,7 @@ func New(opts ...serverOption) *server {
 	}
 }
 
-// server is the default implementation of Server interface
-type server struct {
+// Server is the default implementation of Server interface
+type Server struct {
 	*http.Server
 }
-
-// // Run run http web server
-// func (s *server) Run() error {
-// 	return s.Server.ListenAndServe()
-// }
-
-// // RunTLS run https web server
-// func (s *server) RunTLS(certFile, keyFile string) {
-// 	s.Server.ListenAndServeTLS(certFile, keyFile)
-// }
